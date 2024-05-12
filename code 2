@@ -1,0 +1,49 @@
+import tkinter as tk
+from collections import Counter
+
+def count_letter_frequency(text):
+    letter_frequency = Counter(text.lower())
+    return letter_frequency
+
+def calculate_percentages(letter_frequency, total_letters):
+    percentages = {}
+    for letter, count in letter_frequency.items():
+        percentage = (count / total_letters) * 100
+        percentages[letter] = percentage
+    return percentages
+
+def find_top_characters(percentages):
+    top_characters = sorted(percentages.items(), key=lambda x: x[1], reverse=True)[:5]
+    return top_characters
+
+def analyze_text():
+    text = text_entry.get("1.0", tk.END).strip()
+    letter_frequency = count_letter_frequency(text)
+    total_letters = sum(letter_frequency.values())
+    percentages = calculate_percentages(letter_frequency, total_letters)
+    top_characters = find_top_characters(percentages)
+    
+    result_text = ""
+    for letter, percentage in top_characters:
+        result_text += f"{letter} - {percentage:.2f}%\n"
+    
+    result_label.configure(text=result_text)
+
+# Create the GUI window
+window = tk.Tk()
+window.title("Letter Frequency Analyzer")
+
+# Create the text entry widget
+text_entry = tk.Text(window, height=10, width=50)
+text_entry.pack()
+
+# Create the analyze button
+analyze_button = tk.Button(window, text="Analyze", command=analyze_text)
+analyze_button.pack()
+
+# Create the result label
+result_label = tk.Label(window)
+result_label.pack()
+
+# Start the GUI event loop
+window.mainloop()
